@@ -5,7 +5,8 @@ import numpy as np
 import networkx as nx
 from pyvis.network import Network
 
-st.title('ダイクストラ法')
+st.title('時空間情報処理特論 最終課題')
+st.write('学修番号: 21860632   氏名: 山口翔大')
 
 stations=['東京','品川','渋谷','新宿','新横浜','横浜','小田原']
 sidx=list(range(len(stations)))
@@ -20,7 +21,9 @@ w=[[ 0, 8,16,15, 0, 0, 0],
   [ 0, 0,78, 0,15,52, 0],
   ]
 
-# Radio buttonに用いる文字列
+st.write('ダイクストラ法を用いて、東京駅から小田原駅間の最短経路を表示します。')
+st.write('もし経路の中で通りたくない駅があれば下記で選択して下さい。')
+
 stlist=stations[1:-1]
 stlist.append('除外しない')
 removed_station=st.radio('除外する駅名',stlist)
@@ -32,7 +35,7 @@ else:
    stations.pop(idx)
    sidx.pop(idx)
    pos.pop(idx)
-   pos=np.array(pos) # 後のスライシングのためにnp.arrayにしておく
+   pos=np.array(pos)
    
    for i in range(len(w)):
        w[i].pop(idx)
@@ -54,10 +57,10 @@ path_pairs=list()
 for i in range(len(path)-1):
    path_pairs.append([path[i],path[i+1]])
 
-st.title(r'東京→小田原駅の最短経路')
-'最短経路の合計コストは'+str(length)
+st.title(r'最短経路')
+'最短経路の合計コストは、 '+str(length)+' [分]です。 (乗り換えに要する時間は含みません。)'
 
-nt=Network("500px","700px",heading='')
+nt=Network("500px","800px",heading='')
 
 for i in range(len(stations)):
    nt.add_node(i,label=stations[i],x=int(pos[i][0]*55),y=int(pos[i][1]*60))
@@ -72,4 +75,4 @@ for pair in G.edges:
 nt.show('test.html')
 htmlfile=open('test.html','r',encoding='utf-8')
 source=htmlfile.read()
-components.html(source,height=800,width=900)
+components.html(source,height=1000,width=1300)
